@@ -108,7 +108,8 @@ router.post("/match", async (req, res) => {
     }
 
     // Intelligent Matching using Gemini AI
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Updated to gemini-2.5-flash as 1.5 is deprecated in this timeline
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
       Act as an expert Applicant Tracking System (ATS). Compare the following Resume Text against the Job Description.
