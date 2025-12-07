@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const Resume = require("../models/Resume");
+const { extractText } = require("../utils/textExtractor");
 const router = express.Router();
 
 // Ensure uploads directory exists
@@ -60,11 +61,15 @@ router.post("/upload", upload.single("resume"), async (req, res) => {
     // Let's assume the frontend sends 'userId' in the body for now alongside the file.
     const { userId } = req.body;
 
+    // Extract text from the uploaded file
+    const extractedText = await extractText(req.file.path, req.file.mimetype);
+
     const newResume = new Resume({
       user: userId, // This must be a valid ObjectId string
       fileName: req.file.originalname,
       filePath: req.file.path,
       fileType: req.file.mimetype,
+      textContent: extractedText
     });
 
     await newResume.save();

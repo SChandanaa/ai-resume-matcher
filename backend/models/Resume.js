@@ -22,6 +22,10 @@ const ResumeSchema = new mongoose.Schema({
     type: Object, // To store structured data extracted from AI later
     default: {},
   },
+  textContent: {
+    type: String,
+    default: "",
+  },
   uploadedAt: {
     type: Date,
     default: Date.now,
