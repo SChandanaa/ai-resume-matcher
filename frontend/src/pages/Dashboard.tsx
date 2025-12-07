@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, CheckCircle, AlertCircle, Play, ChevronRight, BarChart } from 'lucide-react';
+import { FileText, CheckCircle, AlertCircle, Play, BarChart } from 'lucide-react';
 import api from '../services/api';
 
 interface Resume {

@@ -4,7 +4,10 @@ const path = require("path");
 const fs = require("fs");
 const Resume = require("../models/Resume");
 const { extractText } = require("../utils/textExtractor");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const router = express.Router();
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, "..", "uploads");
@@ -104,38 +107,55 @@ router.post("/match", async (req, res) => {
       return res.status(404).json({ message: "Resume not found" });
     }
 
-    // Basic Keyword Matching Logic
-    const resumeText = (resume.textContent || "").toLowerCase();
-    const jdText = (jobDescription || "").toLowerCase();
-    
-    // Extract keywords from JD (removing common stop words)
-    const stopWords = ["a", "an", "the", "and", "or", "but", "in", "on", "at", "to", "for", "with", "is", "are", "was", "were", "be", "been", "of", "from", "as", "by"];
-    const jdKeywords = jdText
-      .replace(/[^\w\s]/g, "")
-      .split(/\s+/)
-      .filter(word => word.length > 2 && !stopWords.includes(word));
-    
-    // Calculate Score
-    const uniqueKeywords = [...new Set(jdKeywords)];
-    let matchCount = 0;
-    const missingKeywords = [];
+    // Intelligent Matching using Gemini AI
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    uniqueKeywords.forEach(keyword => {
-      if (resumeText.includes(keyword)) {
-        matchCount++;
-      } else {
-        missingKeywords.push(keyword);
+    const prompt = `
+      Act as an expert Applicant Tracking System (ATS). Compare the following Resume Text against the Job Description.
+      
+      Resume Text:
+      "${resume.textContent}"
+      
+      Job Description:
+      "${jobDescription}"
+      
+      Return a JSON response ONLY with the following structure (no markdown):
+      {
+        "score": number (0-100),
+        "matchedKeywords": ["list of key matched skills found in both"],
+        "missingKeywords": ["critical skills from JD missing in resume"],
+        "feedback": "A short, constructive qualitative feedback summary (max 2 sentences)."
       }
-    });
+    `;
 
-    const score = Math.round((matchCount / uniqueKeywords.length) * 100) || 0;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    let text = response.text();
+
+    // Clean up potential markdown code blocks
+    text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+    
+    const analysis = JSON.parse(text);
+
+    // Ensure matchedKeywords is a number if frontend expects number, OR update frontend to handle array.
+    // Dashboard currently expects: matchedKeywords: number, missingKeywords: string[]
+    // Let's adapt the AI response to match our Frontend interface or update Frontend.
+    // Current Frontend Interface:
+    // matchedKeywords: number
+    // totalKeywords: number
+    // missingKeywords: string[]
+    
+    // We will calculate counts from AI response
+    const matchedCount = analysis.matchedKeywords ? analysis.matchedKeywords.length : 0;
+    const missingCount = analysis.missingKeywords ? analysis.missingKeywords.length : 0;
+    const totalCount = matchedCount + missingCount;
 
     res.json({
-      score,
-      totalKeywords: uniqueKeywords.length,
-      matchedKeywords: matchCount,
-      missingKeywords: missingKeywords.slice(0, 10), // Limit to top 10 missing
-      feedback: score > 70 ? "Great Match!" : score > 40 ? "Good Potential" : "Needs Improvement"
+      score: analysis.score,
+      totalKeywords: totalCount,
+      matchedKeywords: matchedCount, 
+      missingKeywords: analysis.missingKeywords || [],
+      feedback: analysis.feedback
     });
 
   } catch (err) {
