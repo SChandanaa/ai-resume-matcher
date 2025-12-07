@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
 import Upload from './pages/Upload';
+import Dashboard from './pages/Dashboard';
 import './App.css';
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/upload" element={<Upload />} />
-            <Route path="/dashboard" element={<div style={{ padding: '4rem', textAlign: 'center' }}>Dashboard Coming Soon</div>} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
       </div>

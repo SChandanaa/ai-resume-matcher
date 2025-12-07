@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload as UploadIcon, FileText, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const Upload = () => {
@@ -32,6 +33,10 @@ const Upload = () => {
             maxFiles: 1
       });
 
+      const navigate = useNavigate();
+
+      // ... existing code ...
+
       const handleUpload = async () => {
             if (!file) return;
 
@@ -50,9 +55,13 @@ const Upload = () => {
                   });
                   setSuccess(true);
                   setFile(null);
-            } catch (err: any) {
+                  setTimeout(() => navigate('/dashboard'), 1500);
+            } catch (err: unknown) {
+                  // ... error handling
                   console.error(err);
-                  setError(err.response?.data?.message || 'Upload failed. Please try again.');
+                  const errorMessage = err instanceof Error ? err.message : 'Upload failed. Please try again.';
+                  const apiError = err as { response?: { data?: { message?: string } } };
+                  setError(apiError.response?.data?.message || errorMessage);
             } finally {
                   setUploading(false);
             }
