@@ -19,4 +19,6 @@ const api = axios.create({
       },
 });
 
+console.log('API_URL being used:', API_URL);
+
 export default api;
