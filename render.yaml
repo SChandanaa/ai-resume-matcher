@@ -24,4 +24,4 @@ services:
         fromService:
           type: web
           name: ai-resume-matcher-backend
-          property: url
+          property: host
