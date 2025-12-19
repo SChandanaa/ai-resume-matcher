@@ -13,12 +13,12 @@ services:
       - key: GEMINI_API_KEY
         sync: false
 
-  - type: static
+  - type: web
     name: ai-resume-matcher-frontend
     env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: frontend/dist
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
         fromService:
