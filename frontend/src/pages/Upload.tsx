@@ -35,8 +35,6 @@ const Upload = () => {
 
       const navigate = useNavigate();
 
-      // ... existing code ...
-
       const handleUpload = async () => {
             if (!file) return;
 
@@ -68,70 +66,44 @@ const Upload = () => {
       };
 
       return (
-            <div style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 2rem' }}>
+            <div className="max-w-3xl mx-auto py-16 px-4 md:px-8">
                   <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{
-                              background: 'var(--surface)',
-                              padding: '3rem',
-                              borderRadius: '24px',
-                              border: '1px solid var(--glass-border)',
-                              boxShadow: 'var(--shadow-card)',
-                              width: '100%',
-                              textAlign: 'center'
-                        }}
+                        className="bg-[var(--surface)] p-8 md:p-12 rounded-3xl border border-[var(--glass-border)] shadow-sm text-center w-full"
                   >
-                        <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'var(--text)' }}>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[var(--text)]">
                               Upload Your Resume
                         </h2>
-                        <p style={{ color: 'var(--text-muted)', marginBottom: '3rem' }}>
+                        <p className="text-[var(--text-muted)] mb-8 md:mb-12">
                               Supported formats: PDF, DOC, DOCX
                         </p>
 
                         <div
                               {...getRootProps()}
-                              style={{
-                                    border: `2px dashed ${isDragActive ? 'var(--primary)' : 'var(--glass-border)'}`,
-                                    borderRadius: '16px',
-                                    padding: '4rem 2rem',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
-                                    backgroundColor: isDragActive ? 'rgba(99, 102, 241, 0.1)' : 'var(--input-bg)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    gap: '1.5rem',
-                                    outline: 'none'
-                              }}
+                              className={`
+                                    border-2 border-dashed rounded-2xl p-8 md:p-16 cursor-pointer transition-all duration-300 flex flex-col items-center gap-6 outline-none
+                                    ${isDragActive ? 'border-[var(--primary)] bg-indigo-500/10' : 'border-[var(--glass-border)] bg-[var(--input-bg)] hover:border-[var(--primary)] hover:bg-slate-50'}
+                              `}
                         >
                               <input {...getInputProps()} />
 
-                              <div style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    borderRadius: '50%',
-                                    background: 'var(--surface)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
-                              }}>
-                                    {file ? <FileText size={40} color="var(--primary)" /> : <UploadIcon size={40} color="var(--text-muted)" />}
+                              <div className="w-20 h-20 rounded-full bg-[var(--surface)] flex items-center justify-center shadow-lg">
+                                    {file ? <FileText size={40} className="text-[var(--primary)]" /> : <UploadIcon size={40} className="text-[var(--text-muted)]" />}
                               </div>
 
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                              <div className="flex flex-col gap-2">
                                     {file ? (
                                           <>
-                                                <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{file.name}</span>
-                                                <span style={{ color: 'var(--text-muted)' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                                                <span className="text-xl font-semibold break-all">{file.name}</span>
+                                                <span className="text-[var(--text-muted)]">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                                           </>
                                     ) : (
                                           <>
-                                                <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>
+                                                <span className="text-xl font-semibold">
                                                       {isDragActive ? 'Drop it here!' : 'Click to upload or drag & drop'}
                                                 </span>
-                                                <span style={{ color: 'var(--text-muted)' }}>Maximum file size 5MB</span>
+                                                <span className="text-[var(--text-muted)]">Maximum file size 5MB</span>
                                           </>
                                     )}
                               </div>
@@ -143,18 +115,7 @@ const Upload = () => {
                                           initial={{ opacity: 0, height: 0 }}
                                           animate={{ opacity: 1, height: 'auto' }}
                                           exit={{ opacity: 0, height: 0 }}
-                                          style={{
-                                                marginTop: '2rem',
-                                                padding: '1rem',
-                                                background: 'rgba(239, 68, 68, 0.1)',
-                                                border: '1px solid rgba(239, 68, 68, 0.2)',
-                                                borderRadius: '12px',
-                                                color: '#ef4444',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                gap: '0.5rem'
-                                          }}
+                                          className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 flex items-center justify-center gap-2"
                                     >
                                           <AlertCircle size={20} />
                                           {error}
@@ -166,18 +127,7 @@ const Upload = () => {
                                           initial={{ opacity: 0, height: 0 }}
                                           animate={{ opacity: 1, height: 'auto' }}
                                           exit={{ opacity: 0, height: 0 }}
-                                          style={{
-                                                marginTop: '2rem',
-                                                padding: '1rem',
-                                                background: 'rgba(16, 185, 129, 0.1)',
-                                                border: '1px solid rgba(16, 185, 129, 0.2)',
-                                                borderRadius: '12px',
-                                                color: '#10b981',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                gap: '0.5rem'
-                                          }}
+                                          className="mt-8 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-500 flex items-center justify-center gap-2"
                                     >
                                           <CheckCircle size={20} />
                                           Resume uploaded successfully!
@@ -194,21 +144,11 @@ const Upload = () => {
                                           handleUpload();
                                     }}
                                     disabled={uploading}
-                                    style={{
-                                          marginTop: '3rem',
-                                          background: 'linear-gradient(to right, var(--primary), var(--primary-hover))',
-                                          color: 'white',
-                                          border: 'none',
-                                          padding: '1rem 3rem',
-                                          fontSize: '1.1rem',
-                                          borderRadius: '50px',
-                                          cursor: uploading ? 'not-allowed' : 'pointer',
-                                          opacity: uploading ? 0.7 : 1,
-                                          boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)',
-                                          display: 'inline-flex',
-                                          alignItems: 'center',
-                                          gap: '0.5rem'
-                                    }}
+                                    className={`
+                                          mt-12 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-hover)] text-white border-none py-4 px-12 text-lg rounded-full 
+                                          cursor-pointer shadow-lg shadow-indigo-500/40 inline-flex items-center gap-2 transition-all
+                                          disabled:opacity-70 disabled:cursor-not-allowed
+                                    `}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                               >

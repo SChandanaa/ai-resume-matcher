@@ -4,75 +4,46 @@ import { Upload, CheckCircle, Zap } from 'lucide-react';
 
 const Landing = () => {
       return (
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
                   {/* Hero Section */}
-                  <section style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        padding: '5rem 0'
-                  }}>
+                  <section className="flex flex-col items-center text-center py-20">
                         <motion.div
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ duration: 0.8 }}
+                              className="w-full max-w-4xl"
                         >
-                              <h1 style={{
-                                    fontSize: '4rem',
-                                    fontWeight: '800',
-                                    background: 'linear-gradient(to right, var(--primary), var(--secondary))',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    marginBottom: '1rem'
-                              }}>
+                              <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] bg-clip-text text-transparent mb-6 leading-tight">
                                     Analyze Your Resume with AI
                               </h1>
-                              <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 2rem' }}>
+                              <p className="text-lg sm:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
                                     Get instant feedback, ATS optimization tips, and job matching scores to land your dream job.
                               </p>
 
-                              <Link to="/upload">
-                                    <button style={{
-                                          background: 'linear-gradient(to right, var(--primary), var(--primary-hover))',
-                                          color: 'white',
-                                          border: 'none',
-                                          padding: '1rem 2rem',
-                                          fontSize: '1.1rem',
-                                          borderRadius: '50px',
-                                          cursor: 'pointer',
-                                          boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          gap: '0.5rem'
-                                    }}>
-                                          <Upload size={20} />
-                                          Scan Resume
+                              <Link to="/upload" className="inline-block">
+                                    <button className="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white border-0 py-4 px-8 text-lg rounded-full cursor-pointer shadow-lg shadow-indigo-500/40 flex items-center gap-2 transition-transform hover:-translate-y-1 active:translate-y-0">
+                                          <Upload size={24} />
+                                          <span>Scan Resume</span>
                                     </button>
                               </Link>
                         </motion.div>
                   </section>
 
                   {/* Features Grid */}
-                  <section style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: '2rem',
-                        marginTop: '4rem'
-                  }}>
+                  <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 mb-20">
                         <FeatureCard
-                              icon={<Zap color="var(--secondary)" size={32} />}
+                              icon={<Zap className="text-[var(--secondary)]" size={32} />}
                               title="Instant Analysis"
                               description="Get results in seconds using our advanced AI algorithms."
                         />
                         <FeatureCard
-                              icon={<CheckCircle color="#10b981" size={32} />}
+                              icon={<CheckCircle className="text-emerald-500" size={32} />}
                               title="ATS Optimization"
                               description="Ensure your resume passes Applicant Tracking Systems."
                         />
                         <FeatureCard
-                              icon={<Upload color="var(--primary)" size={32} />}
+                              icon={<Upload className="text-[var(--primary)]" size={32} />}
                               title="Smart Matching"
                               description="See how well your resume matches specific job descriptions."
                         />
@@ -85,19 +56,11 @@ const Landing = () => {
 const FeatureCard = ({ icon, title, description }: { icon: any, title: string, description: string }) => (
       <motion.div
             whileHover={{ y: -5 }}
-            style={{
-                  padding: '2rem',
-                  backgroundColor: 'var(--surface)',
-                  border: '1px solid var(--glass-border)',
-                  borderRadius: '16px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1rem'
-            }}
+            className="p-8 bg-[var(--surface)] border border-slate-200 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-all"
       >
             {icon}
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{title}</h3>
-            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{description}</p>
+            <h3 className="text-2xl font-semibold text-slate-800 mb-2">{title}</h3>
+            <p className="text-slate-500 leading-relaxed">{description}</p>
       </motion.div>
 );
 
