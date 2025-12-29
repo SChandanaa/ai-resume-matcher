@@ -92,15 +92,21 @@ router.get("/google", (req, res, next) => {
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "http://localhost:5173/login?error=GoogleAuthFailed" }),
+  passport.authenticate("google", { session: false, failureRedirect: "/login?error=GoogleAuthFailed" }),
   (req, res) => {
+    // Dynamic Frontend URL for mobile/LAN support
+    // If backend is accessed via 192.168.x.x:5000, redirect to 192.168.x.x:5173
+    const host = req.get('host'); // e.g., "localhost:5000" or "192.168.1.7:5000"
+    const ip = host.split(':')[0];
+    const frontendBase = process.env.FRONTEND_URL || `http://${ip}:5173`;
+
     // Generate token
     const token = jwt.sign(
       { id: req.user._id, email: req.user.email, role: req.user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+    res.redirect(`${frontendBase}/login?token=${token}`);
   }
 );
 
@@ -114,15 +120,20 @@ router.get("/github", (req, res, next) => {
 
 router.get(
   "/github/callback",
-  passport.authenticate("github", { session: false, failureRedirect: "http://localhost:5173/login?error=GithubAuthFailed" }),
+  passport.authenticate("github", { session: false, failureRedirect: "/login?error=GithubAuthFailed" }),
   (req, res) => {
+    // Dynamic Frontend URL for mobile/LAN support
+    const host = req.get('host');
+    const ip = host.split(':')[0];
+    const frontendBase = process.env.FRONTEND_URL || `http://${ip}:5173`;
+
     // Generate token
     const token = jwt.sign(
       { id: req.user._id, email: req.user.email, role: req.user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.redirect(`http://localhost:5173/login?token=${token}`);
+    res.redirect(`${frontendBase}/login?token=${token}`);
   }
 );
 

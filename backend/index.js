@@ -8,6 +8,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (Render/Heroku) for proper HTTPS support
 app.use(cors({
   origin: '*', // Allow all origins for now to troubleshoot
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
