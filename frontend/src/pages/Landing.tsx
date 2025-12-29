@@ -48,7 +48,7 @@ const Landing = () => {
                                           gap: '0.5rem'
                                     }}>
                                           <Upload size={20} />
-                                          Start Free Scan
+                                          Scan Resume
                                     </button>
                               </Link>
                         </motion.div>

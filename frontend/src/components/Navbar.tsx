@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { FileText, Github, LogOut } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { FileText, LogOut } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
 import api from '../services/api';
 
 interface UserProfile {
@@ -11,7 +11,15 @@ interface UserProfile {
 
 const Navbar = () => {
       const navigate = useNavigate();
+      const location = useLocation();
       const [user, setUser] = useState<UserProfile | null>(null);
+      const dropdownRef = useRef<HTMLDivElement>(null);
+
+      const isActive = (path: string) => location.pathname === path;
+      const getLinkClasses = (path: string) =>
+            isActive(path)
+                  ? "text-indigo-600 font-bold transition-colors"
+                  : "text-gray-500 hover:text-indigo-600 font-medium transition-colors";
       const [showDropdown, setShowDropdown] = useState(false);
 
       useEffect(() => {
@@ -30,6 +38,19 @@ const Navbar = () => {
             fetchUser();
       }, []);
 
+      useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                  if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                        setShowDropdown(false);
+                  }
+            };
+
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => {
+                  document.removeEventListener('mousedown', handleClickOutside);
+            };
+      }, []);
+
       const handleLogout = () => {
             localStorage.removeItem('token');
             navigate('/login');
@@ -46,10 +67,10 @@ const Navbar = () => {
 
                   <div className="flex items-center gap-8">
                         <div className="hidden md:flex items-center gap-6">
-                              <Link to="/home" className="text-gray-500 hover:text-indigo-600 font-medium transition-colors">Home</Link>
-                              <Link to="/upload" className="text-gray-500 hover:text-indigo-600 font-medium transition-colors">Scan Resume</Link>
-                              <Link to="/apply" className="text-gray-500 hover:text-indigo-600 font-medium transition-colors">Apply Helper</Link>
-                              <Link to="/dashboard" className="text-gray-500 hover:text-indigo-600 font-medium transition-colors">Dashboard</Link>
+                              <Link to="/home" className={getLinkClasses('/home')}>Home</Link>
+                              <Link to="/upload" className={getLinkClasses('/upload')}>Scan Resume</Link>
+                              <Link to="/dashboard" className={getLinkClasses('/dashboard')}>Match Resume</Link>
+                              <Link to="/apply" className={getLinkClasses('/apply')}>Apply Helper</Link>
                               <Link to="/scam-check" className="text-red-500 font-bold hover:text-red-600 transition-colors flex items-center gap-1 bg-red-50 px-3 py-1 rounded-full">
                                     Verify Jobs 🛡️
                               </Link>
@@ -58,22 +79,20 @@ const Navbar = () => {
                         <div className="h-6 w-px bg-gray-200 hidden md:block"></div>
 
                         {/* About Icon / GitHub */}
-                        <a
-                              href="https://github.com/SChandanaa"
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-gray-400 hover:text-black transition-colors"
-                              title="About / GitHub"
+                        {/* Contact Link */}
+                        <Link
+                              to="/contact"
+                              className={getLinkClasses('/contact')}
                         >
-                              <Github size={22} />
-                        </a>
+                              Contact
+                        </Link>
 
                         {/* User Profile */}
                         {user ? (
-                              <div className="relative">
+                              <div className="relative" ref={dropdownRef}>
                                     <button
                                           onClick={() => setShowDropdown(!showDropdown)}
-                                          className="flex items-center gap-3 pl-2 transition-colors outline-none"
+                                          className="flex items-center gap-3 pl-2 transition-colors outline-none cursor-pointer"
                                     >
                                           <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold border-2 border-white shadow-md">
                                                 {user.name.charAt(0).toUpperCase()}
@@ -103,10 +122,7 @@ const Navbar = () => {
                                           </div>
                                     )}
 
-                                    {/* Backdrop for dropdown */}
-                                    {showDropdown && (
-                                          <div className="fixed inset-0 z-[-1]" onClick={() => setShowDropdown(false)}></div>
-                                    )}
+
                               </div>
                         ) : (
                               <Link to="/login" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-lg shadow-md shadow-indigo-500/20 transition-all">

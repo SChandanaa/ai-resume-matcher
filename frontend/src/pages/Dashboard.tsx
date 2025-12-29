@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, CheckCircle, AlertCircle, Play, BarChart } from 'lucide-react';
+import { CheckCircle, AlertCircle, Play, BarChart } from 'lucide-react';
 import api from '../services/api';
 
 interface Resume {
@@ -63,13 +63,13 @@ const Dashboard = () => {
       };
 
       return (
-            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
+            <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '2rem', display: 'grid', gridTemplateColumns: '400px 1fr', gap: '2rem' }}>
 
                   {/* Sidebar: Resume List */}
                   <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '16px', height: 'fit-content', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}>
                         <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: 'var(--text-muted)' }}>My Resumes</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                              {resumes.map((resume) => (
+                              {resumes.map((resume, index) => (
                                     <div
                                           key={resume._id}
                                           onClick={() => setSelectedResume(resume._id)}
@@ -79,16 +79,33 @@ const Dashboard = () => {
                                                 background: selectedResume === resume._id ? 'var(--primary)' : 'var(--item-hover)',
                                                 cursor: 'pointer',
                                                 display: 'flex',
-                                                alignItems: 'center',
+                                                alignItems: 'flex-start', // Align to top for multi-line
                                                 gap: '0.8rem',
                                                 transition: 'all 0.2s',
                                                 border: selectedResume === resume._id ? '1px solid transparent' : '1px solid var(--glass-border)'
                                           }}
                                     >
-                                          <FileText size={20} />
-                                          <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                                                <div style={{ fontWeight: 500 }}>{resume.fileName}</div>
-                                                <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>{new Date(resume.uploadedAt).toLocaleDateString()}</div>
+                                          <div style={{
+                                                minWidth: '24px',
+                                                height: '24px',
+                                                background: 'rgba(255,255,255,0.2)',
+                                                borderRadius: '50%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 'bold',
+                                                marginTop: '2px'
+                                          }}>
+                                                {index + 1}
+                                          </div>
+                                          <div style={{ overflow: 'hidden', width: '100%' }}>
+                                                <div title={resume.fileName} style={{ fontWeight: 500, wordBreak: 'break-all', lineHeight: '1.4' }}>
+                                                      {resume.fileName}
+                                                </div>
+                                                <div style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '4px' }}>
+                                                      {new Date(resume.uploadedAt).toLocaleDateString()} • {new Date(resume.uploadedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </div>
                                           </div>
                                     </div>
                               ))}

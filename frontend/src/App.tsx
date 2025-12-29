@@ -6,6 +6,7 @@ import Upload from './pages/Upload';
 import Dashboard from './pages/Dashboard';
 import ScamCheck from './pages/ScamCheck';
 import SmartApply from './pages/SmartApply';
+import Contact from './pages/Contact';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/scam-check" element={<ScamCheck />} />
           <Route path="/apply" element={<SmartApply />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
       </Routes>
     </Router>
