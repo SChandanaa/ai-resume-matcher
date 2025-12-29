@@ -3,7 +3,7 @@ import axios from 'axios';
 // 1. Production: Always use VITE_API_URL if set (e.g. from Render/Vercel dashboard)
 // 2. Development (Localhost): Default to localhost:5000
 // 3. Development (Mobile/LAN): Dynamically use the computer's IP if accessing via IP
-let API_URL = import.meta.env.VITE_API_URL;
+export let API_URL = import.meta.env.VITE_API_URL;
 
 if (!API_URL) {
       const hostname = window.location.hostname;

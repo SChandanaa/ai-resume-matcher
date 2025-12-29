@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
-import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+// import { FcGoogle } from 'react-icons/fc'; // Removed as react-icons might not be installed
+// import { FaGithub } from 'react-icons/fa'; // Removed as react-icons might not be installed
+import { Github, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'; // Use Lucide for consistent icons
+import { API_URL } from '../services/api';
 
 const Login = () => {
       const navigate = useNavigate();
@@ -33,11 +34,11 @@ const Login = () => {
       };
 
       const handleGoogleLogin = () => {
-            window.location.href = 'http://localhost:5000/api/auth/google';
+            window.location.href = `${API_URL}/auth/google`;
       };
 
       const handleGithubLogin = () => {
-            window.location.href = 'http://localhost:5000/api/auth/github';
+            window.location.href = `${API_URL}/auth/github`;
       };
 
       return (
@@ -63,7 +64,7 @@ const Login = () => {
                                     onClick={handleGoogleLogin}
                                     className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-200 shadow-sm hover:shadow-md"
                               >
-                                    <FcGoogle className="text-2xl" />
+                                    <div className="w-6 h-6 flex items-center justify-center font-bold text-lg text-red-500">G</div>
                                     <span>Continue with Google</span>
                               </button>
 
@@ -71,7 +72,7 @@ const Login = () => {
                                     onClick={handleGithubLogin}
                                     className="w-full bg-[#24292F] hover:bg-[#24292F]/90 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition-all duration-200 shadow-sm hover:shadow-md"
                               >
-                                    <FaGithub className="text-2xl" />
+                                    <Github className="text-2xl" />
                                     <span>Continue with GitHub</span>
                               </button>
                         </div>
