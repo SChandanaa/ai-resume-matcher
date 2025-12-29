@@ -15,9 +15,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
+const passport = require("passport");
+require("./config/passport")();
+app.use(passport.initialize());
+
 // routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/resume", require("./routes/resume"));
+app.use("/api/scam", require("./routes/scam"));
+app.use("/api/jobs", require("./routes/jobs"));
 
 app.get("/", (req, res) => {
   res.send("Backend API is running...");

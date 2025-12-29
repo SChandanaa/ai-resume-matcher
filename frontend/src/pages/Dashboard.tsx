@@ -66,7 +66,7 @@ const Dashboard = () => {
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
 
                   {/* Sidebar: Resume List */}
-                  <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '16px', height: 'fit-content', border: '1px solid var(--glass-border)' }}>
+                  <div style={{ background: 'var(--surface)', padding: '1.5rem', borderRadius: '16px', height: 'fit-content', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}>
                         <h3 style={{ marginTop: 0, marginBottom: '1.5rem', color: 'var(--text-muted)' }}>My Resumes</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                               {resumes.map((resume) => (
@@ -76,7 +76,7 @@ const Dashboard = () => {
                                           style={{
                                                 padding: '1rem',
                                                 borderRadius: '12px',
-                                                background: selectedResume === resume._id ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                                                background: selectedResume === resume._id ? 'var(--primary)' : 'var(--item-hover)',
                                                 cursor: 'pointer',
                                                 display: 'flex',
                                                 alignItems: 'center',
@@ -103,7 +103,7 @@ const Dashboard = () => {
                         <motion.div
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
-                              style={{ background: 'var(--surface)', padding: '2rem', borderRadius: '24px', border: '1px solid var(--glass-border)' }}
+                              style={{ background: 'var(--surface)', padding: '2rem', borderRadius: '24px', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}
                         >
                               <h2 style={{ fontSize: '1.8rem', marginTop: 0, display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                                     <BarChart color="var(--secondary)" />
@@ -119,7 +119,7 @@ const Dashboard = () => {
                                           height: '200px',
                                           padding: '1rem',
                                           borderRadius: '12px',
-                                          background: 'rgba(0,0,0,0.2)',
+                                          background: 'var(--input-bg)',
                                           border: '1px solid var(--glass-border)',
                                           color: 'var(--text)',
                                           fontSize: '1rem',
@@ -156,7 +156,7 @@ const Dashboard = () => {
                               <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    style={{ background: 'var(--surface)', padding: '2rem', borderRadius: '24px', border: '1px solid var(--glass-border)' }}
+                                    style={{ background: 'var(--surface)', padding: '2rem', borderRadius: '24px', border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-card)' }}
                               >
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
                                           <div>

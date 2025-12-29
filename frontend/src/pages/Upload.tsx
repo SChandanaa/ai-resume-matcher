@@ -77,6 +77,7 @@ const Upload = () => {
                               padding: '3rem',
                               borderRadius: '24px',
                               border: '1px solid var(--glass-border)',
+                              boxShadow: 'var(--shadow-card)',
                               width: '100%',
                               textAlign: 'center'
                         }}
@@ -96,7 +97,7 @@ const Upload = () => {
                                     padding: '4rem 2rem',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s ease',
-                                    backgroundColor: isDragActive ? 'rgba(99, 102, 241, 0.05)' : 'transparent',
+                                    backgroundColor: isDragActive ? 'rgba(99, 102, 241, 0.1)' : 'var(--input-bg)',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
