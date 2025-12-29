@@ -25,7 +25,7 @@ const Dashboard = () => {
       const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
       const [loading, setLoading] = useState(false);
 
-      const { user, loading: authLoading } = useAuth();
+      const { user } = useAuth();
 
       useEffect(() => {
             if (user) {
