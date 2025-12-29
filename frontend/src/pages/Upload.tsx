@@ -5,15 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
+
 const Upload = () => {
       const [file, setFile] = useState<File | null>(null);
       const [uploading, setUploading] = useState(false);
       const [success, setSuccess] = useState(false);
       const [error, setError] = useState<string | null>(null);
 
-      // DEMO USER ID - For development only
       // In a real app, this would come from Auth Context
-      const DEMO_USER_ID = "6935cc7143f7bdd9a2a13ee5";
 
       const onDrop = useCallback((acceptedFiles: File[]) => {
             if (acceptedFiles.length > 0) {
@@ -43,7 +42,6 @@ const Upload = () => {
 
             const formData = new FormData();
             formData.append('resume', file);
-            formData.append('userId', DEMO_USER_ID);
 
             try {
                   await api.post('/resume/upload', formData, {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { CheckCircle, AlertCircle, Play, BarChart, FileText } from 'lucide-react';
 import api from '../services/api';
@@ -24,16 +25,17 @@ const Dashboard = () => {
       const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
       const [loading, setLoading] = useState(false);
 
-      // DEMO USER ID - In prod this comes from Auth Context
-      const DEMO_USER_ID = "6935cc7143f7bdd9a2a13ee5";
+      const { user, loading: authLoading } = useAuth();
 
       useEffect(() => {
-            fetchResumes();
-      }, []);
+            if (user) {
+                  fetchResumes();
+            }
+      }, [user]);
 
       const fetchResumes = async () => {
             try {
-                  const res = await api.get(`/resume/list/${DEMO_USER_ID}`);
+                  const res = await api.get('/resume/list');
                   setResumes(res.data);
                   if (res.data.length > 0) {
                         setSelectedResume(res.data[0]._id);
@@ -76,8 +78,8 @@ const Dashboard = () => {
                                           key={resume._id}
                                           onClick={() => setSelectedResume(resume._id)}
                                           className={`p-4 rounded-xl cursor-pointer flex items-start gap-3 transition-all border ${selectedResume === resume._id
-                                                      ? 'bg-[var(--primary)] text-white border-transparent shadow-lg shadow-indigo-500/20'
-                                                      : 'bg-[var(--background)] hover:bg-slate-100 border-slate-200'
+                                                ? 'bg-[var(--primary)] text-white border-transparent shadow-lg shadow-indigo-500/20'
+                                                : 'bg-[var(--background)] hover:bg-slate-100 border-slate-200'
                                                 }`}
                                     >
                                           <div className={`min-w-[24px] h-6 rounded-full flex items-center justify-center text-xs font-bold mt-[2px] ${selectedResume === resume._id ? 'bg-white/20' : 'bg-slate-200 text-slate-600'

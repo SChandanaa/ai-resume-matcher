@@ -6,6 +6,7 @@ const Resume = require("../models/Resume");
 const { extractText } = require("../utils/textExtractor");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const router = express.Router();
+const verifyToken = require("../middleware/authMiddleware");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -49,20 +50,13 @@ const upload = multer({
 // We might need to abstract the 'verifyToken' middleware. 
 // For this step, I'll just create the route and simple handling.
 
-router.post("/upload", upload.single("resume"), async (req, res) => {
+router.post("/upload", verifyToken, upload.single("resume"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // Temporary: If no user ID is provided (since we haven't integrated full auth middleware on routes yet),
-    // we might fail validation if we try to save without a user.
-    // For testing purposes, let's assume the user ID is passed in the body or we mock it.
-    // However, the Schema requires 'user'.
-    // I will check if I can make it optional for initial testing or if I should implement a simple middleware here.
-    
-    // Let's assume the frontend sends 'userId' in the body for now alongside the file.
-    const { userId } = req.body;
+    const userId = req.user.id;
 
     // Extract text from the uploaded file
     const extractedText = await extractText(req.file.path, req.file.mimetype);
@@ -87,10 +81,10 @@ router.post("/upload", upload.single("resume"), async (req, res) => {
   }
 });
 
-// Get all resumes for a user
-router.get("/list/:userId", async (req, res) => {
+// Get all resumes for the logged-in user
+router.get("/list", verifyToken, async (req, res) => {
   try {
-    const resumes = await Resume.find({ user: req.params.userId }).sort({ uploadedAt: -1 });
+    const resumes = await Resume.find({ user: req.user.id }).sort({ uploadedAt: -1 });
     res.json(resumes);
   } catch (err) {
     res.status(500).json({ message: "Server Error", error: err.message });
@@ -98,7 +92,7 @@ router.get("/list/:userId", async (req, res) => {
 });
 
 // Match Resume with Job Description (Phase 1: Simple Keyword Matching)
-router.post("/match", async (req, res) => {
+router.post("/match", verifyToken, async (req, res) => {
   try {
     const { resumeId, jobDescription } = req.body;
     

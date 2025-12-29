@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
+
 import { motion } from 'framer-motion';
 import { FileText, ExternalLink, CheckCircle } from 'lucide-react';
 import { findBestResume, type MatchResult } from '../services/jobService';
 // In a real app, use Auth Context
-const DEMO_USER_ID = "6935cc7143f7bdd9a2a13ee5";
-
 const SmartApply = () => {
       const [formData, setFormData] = useState({
             jobUrl: '',
@@ -23,7 +22,6 @@ const SmartApply = () => {
 
             try {
                   const data = await findBestResume({
-                        userId: DEMO_USER_ID,
                         jobDescription: formData.description,
                         jobUrl: formData.jobUrl
                   });

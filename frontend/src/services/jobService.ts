@@ -16,7 +16,6 @@ export interface MatchResult {
 }
 
 export const findBestResume = async (data: {
-      userId: string;
       jobDescription: string;
       jobUrl?: string;
 }): Promise<MatchResult> => {

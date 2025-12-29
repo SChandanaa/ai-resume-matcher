@@ -3,15 +3,18 @@ const router = express.Router();
 const Resume = require("../models/Resume");
 const { calculateMatchScore } = require("../utils/matchLogic");
 
+const verifyToken = require("../middleware/authMiddleware");
+
 // @route   POST /api/jobs/match
 // @desc    Find the best resume for a given job description
-// @access  Public (in this demo mode, ideally Protected)
-router.post("/match", async (req, res) => {
+// @access  Protected
+router.post("/match", verifyToken, async (req, res) => {
   try {
-    const { userId, jobDescription, jobUrl } = req.body;
+    const { jobDescription, jobUrl } = req.body;
+    const userId = req.user.id;
 
-    if (!userId || !jobDescription) {
-      return res.status(400).json({ error: "User ID and Job Description are required" });
+    if (!jobDescription) {
+      return res.status(400).json({ error: "Job Description is required" });
     }
 
     // Fetch all resumes for this user

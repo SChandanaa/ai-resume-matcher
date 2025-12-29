@@ -59,18 +59,7 @@ const passport = require("passport");
 // ... (existing code)
 
 // Middleware to verify token
-const verifyToken = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ message: "Access Denied" });
-
-  try {
-    const verified = jwt.verify(token.replace("Bearer ", ""), process.env.JWT_SECRET);
-    req.user = verified;
-    next();
-  } catch (err) {
-    res.status(400).json({ message: "Invalid Token" });
-  }
-};
+const verifyToken = require("../middleware/authMiddleware");
 
 // Get current user (Me)
 router.get("/me", verifyToken, async (req, res) => {
