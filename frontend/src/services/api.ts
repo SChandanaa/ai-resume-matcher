@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-let API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// using local IP '192.168.1.7' instead of localhost for mobile access
+let API_URL = import.meta.env.VITE_API_URL || 'http://192.168.1.7:5000/api';
 
 // If API_URL is just a hostname (common in some deployments), prepend protocol
 if (API_URL && !API_URL.startsWith('http')) {
